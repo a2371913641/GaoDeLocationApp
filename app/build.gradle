@@ -1,0 +1,107 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
+
+    defaultConfig {
+        applicationId "com.example.locationapp"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters  "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+
+    signingConfigs {
+        release {
+            storeFile file("C:/Users/23719/release-key.jks")
+            storePassword "123456"
+            keyAlias "my-key" // 替换为你的密钥别名
+            keyPassword "123456"
+        }
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release // 启用发布版签名
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+//         方式1：排除重复文件（可能导致功能缺失，谨慎使用）
+//        exclude 'assets/map_assets/style_1_s_21_1717058706.data'
+
+        // 方式2：保留第一个文件，忽略后续重复文件
+         pickFirst 'assets/map_assets/style_1_s_21_1717058706.data'
+
+        // 方式3：合并所有重复文件（仅适用于可合并的资源类型，如JSON）
+//         merge 'assets/map_assets/style_1_s_21_1717058706.data'
+    }
+
+    // build.gradle (Project)
+    buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.2.0' // 替换为最新稳定版
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //3D地图so及jar,已经包含定位和搜索功能无需单独引用
+//    implementation 'com.amap.api:3dmap-location-search:latest.integration'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.core:core:1.12.0"
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+
+    //在删除BlankFragment布局和Java文件后出现
+    // AAPT2 aapt2-7.0.0-alpha05-7061591-windows Daemon #0: Unexpected error during link, attempting to stop daemon异常
+    //注释掉implementation 'androidx.legacy:legacy-support-v4:1.0.0'即可恢复正常
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+//     // 示例：排除 AMap3DMap 中的重复模块
+//    implementation('com.amap.api:3dmap-location-search:10.1.300_loc6.4.9_sea9.7.4') {
+//        exclude group: 'com.amap.api', module: 'AMap3DMap'
+//    }
+
+}
+/*
+这个报错重要
+Build-tool 34.0.0 is missing DX at C:\Sdk\build-tools\34.0.0\dx.bat
+Build-tool 34.0.0 is missing DX at C:\Sdk\build-tools\34.0.0\dx.bat
+ */
