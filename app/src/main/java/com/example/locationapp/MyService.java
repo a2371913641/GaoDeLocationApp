@@ -61,7 +61,7 @@ public class MyService extends Service {
 
         provider = locationManager.getBestProvider(criteria, true);
         Log.e(TAG, "定位的provider=" + provider);
-        setReceiveListener();
+//        setReceiveListener();
 
     }
 

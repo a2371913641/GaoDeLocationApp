@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.locationapp">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,22 +22,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LocationApp">
-        <activity android:name=".SixLogActivity"
-            android:launchMode="singleTask"
-            android:exported="true"></activity>
-        <activity android:name=".FiveFriendActivity"
-            android:launchMode="singleTask"
-            android:exported="true"/>
-        <activity android:name=".FourAddFriendActivity"
-            android:launchMode="singleTask"
-            android:exported="true"/>
-        <activity android:name=".ThirdlySignUpActivity"
-            android:launchMode="singleTask"
-            android:exported="true"/>
+        <receiver
+            android:name=".PowerOnReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".SixLogActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".FiveFriendActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".FourAddFriendActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ThirdlySignUpActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".SecondSetPersonalInformationActivity"
-            android:launchMode="singleTask"
-            android:exported="true"/>
+            android:exported="true"
+            android:launchMode="singleTask" />
 
         <service
             android:name=".MyService"
@@ -45,8 +60,8 @@
             android:process=":remote" /> <!-- android:process=":remote" -->
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
